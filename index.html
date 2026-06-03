@@ -1,303 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome To Mbali's Closet</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffe6f0; /* Cute pink background */
-      padding: 20px;
-      margin: 0;
-      color: #333;
-      text-align: center; /* Center all content by default */
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Welcome To Mbali's Closet</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f0; /* Cute pink background */
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+  }
 
-    h1 {
-      color: #444;
-      margin-bottom: 20px;
-    }
+  h1 {
+    color: #444;
+    margin-bottom: 20px;
+  }
 
-    /* Admin login button container */
-    #admin-login-container {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
+  /* Admin login button at top right */
+  #admin-login-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
 
-    /* Style for product display */
-    #products {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
+  /* Style for admin login toggle */
+  #loginForm {
+    display: none;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-top: 10px;
+  }
 
-    .product {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 10px;
-      width: 200px;
-      margin: 10px;
-      text-align: center;
-      transition: transform 0.2s;
-    }
+  /* Buttons style (cute pink) */
+  button {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
 
-    .product:hover {
-      transform: scale(1.05);
-    }
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+  }
 
-    .product img {
-      width: 100%;
-      height: auto;
-      border-radius: 5px;
-    }
+  /* Layout for sections */
+  .section {
+    max-width: 800px;
+    margin: 30px auto;
+  }
 
-    /* Cute, pink buttons style */
-    button {
-      background: linear-gradient(135deg, #ffb6c1, #ff69b4); /* Pink gradient */
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin-top: 10px;
-      border-radius: 25px; /* Rounded "pill" shape */
-      cursor: pointer;
-      font-weight: bold;
-      font-family: 'Arial', sans-serif;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      display: inline-block;
-    }
+  /* Product grid styles */
+  #products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-    button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-      background: linear-gradient(135deg, #ff69b4, #ff1493);
-    }
+  .product {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    margin: 10px;
+    width: 180px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
 
-    /* Center the buttons and forms */
-    #admin-section, #cart, #orderForm {
-      max-width: 400px;
-      margin: 20px auto;
-    }
+  .product:hover {
+    transform: scale(1.05);
+  }
 
-    /* Admin login form style (hidden toggle) */
-    #loginForm {
-      display: none;
-      background: #fff;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      margin-top: 10px;
-    }
+  .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
 
-    /* Input styles */
-    input[type="text"], input[type="number"], input[type="tel"], input[type="password"], input[type="file"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+  /* Order list styles */
+  #cart {
+    margin-top: 10px;
+  }
 
-    /* Order form button */
-    #orderForm button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 25px;
-      font-size: 16px;
-    }
-  </style>
+  /* Form inputs */
+  input[type="text"], input[type="number"], input[type="tel"], input[type="password"], input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  /* Order form button */
+  #orderForm button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+  }
+</style>
 </head>
 <body>
-  <!-- Admin login button at top right -->
-  <div id="admin-login-container">
-    <button onclick="toggleLogin()">Admin Login</button>
-    <div id="loginForm">
-      <input type="text" id="adminUser" placeholder="Username" />
-      <input type="password" id="adminPass" placeholder="Password" />
-      <button onclick="checkLogin()">Login</button>
-      <button onclick="logout()">Logout</button>
-    </div>
+
+<!-- Admin login button -->
+<div id="admin-login-container">
+  <button onclick="toggleLogin()">Admin Login</button>
+  <div id="loginForm">
+    <input type="text" id="adminUser" placeholder="Username" />
+    <input type="password" id="adminPass" placeholder="Password" />
+    <button onclick="checkLogin()">Login</button>
+    <button onclick="logout()">Logout</button>
   </div>
+</div>
 
-  <h1>Welcome To Mbali's Closet</h1>
+<h1>Welcome To Mbali's Closet</h1>
 
-  <!-- Products display -->
+<!-- Link to Admin Page -->
+<div style="margin-bottom:20px;">
+  <a href="admin.html" style="text-decoration:none; padding:10px 20px; background:#ffb6c1; border-radius:20px; color:#fff;">Go to Admin Panel</a>
+</div>
+
+<!-- Products display -->
+<div class="section">
+  <h2>Products</h2>
   <div id="products"></div>
+</div>
 
-  <!-- Shopping cart -->
+<!-- Shopping Cart -->
+<div class="section">
   <h2>Your Cart</h2>
   <div id="cart"></div>
+</div>
 
-  <!-- Order form -->
+<!-- Order Form -->
+<div class="section">
   <h2>Order Form</h2>
   <form id="orderForm">
     <input type="text" id="name" placeholder="Your Name" required />
     <input type="tel" id="phone" placeholder="Your Phone Number" required />
     <button type="submit">Place Order</button>
   </form>
+</div>
 
-  <!-- Admin feature section -->
-  <div id="admin-section">
-    <h2>Admin Panel - Add Products</h2>
-    <form id="productForm">
-      <input type="text" id="productName" placeholder="Product Name" required />
-      <input type="number" id="productPrice" placeholder="Price" required />
-      <input type="file" id="productImageFile" accept="image/*" required />
-      <button type="submit">Add Product</button>
-    </form>
-  </div>
+<script>
+  // Admin credentials (change as needed)
+  const adminUsername = "admin";
+  const adminPassword = "password";
 
-  <script>
-    // Admin credentials
-    const adminUsername = "admin"; // Change as needed
-    const adminPassword = "password"; // Change as needed
+  // Load products and orders from localStorage or use defaults
+  let products = JSON.parse(localStorage.getItem('products')) || [
+    { name: "Red Shirt", price: 20, image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Red+Shirt" },
+    { name: "Blue Jeans", price: 40, image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Blue+Jeans" }
+  ];
 
-    let products = JSON.parse(localStorage.getItem('products')) || [
-      { name: "Red Shirt", price: 20, image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Red+Shirt" },
-      { name: "Blue Jeans", price: 40, image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Blue+Jeans" }
-    ];
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-    let cart = [];
-    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  const productsDiv = document.getElementById('products');
+  const cartDiv = document.getElementById('cart');
 
-    // --- Admin login functions ---
-    function toggleLogin() {
-      const loginDiv = document.getElementById('loginForm');
-      loginDiv.style.display = (loginDiv.style.display === 'none' || loginDiv.style.display === '') ? 'block' : 'none';
+  // Show/hide admin login form
+  function toggleLogin() {
+    const loginDiv = document.getElementById('loginForm');
+    loginDiv.style.display = (loginDiv.style.display === 'block') ? 'none' : 'block';
+  }
+
+  // Check admin login
+  function checkLogin() {
+    const username = document.getElementById('adminUser').value;
+    const password = document.getElementById('adminPass').value;
+    if (username === adminUsername && password === adminPassword) {
+      localStorage.setItem('isAdmin', 'true');
+      alert('Admin logged in!');
+      toggleLogin();
+    } else {
+      alert('Incorrect username or password.');
     }
+  }
 
-    function checkLogin() {
-      const username = document.getElementById('adminUser').value;
-      const password = document.getElementById('adminPass').value;
-      if (username === adminUsername && password === adminPassword) {
-        localStorage.setItem('isAdmin', 'true');
-        alert('Admin logged in!');
-        hideAdminFeatures();
-        toggleLogin();
-      } else {
-        alert('Incorrect username or password.');
-      }
-    }
+  // Logout admin
+  function logout() {
+    localStorage.removeItem('isAdmin');
+    alert('Logged out!');
+  }
 
-    function logout() {
-      localStorage.removeItem('isAdmin');
-      alert('Logged out!');
-      hideAdminFeatures();
-    }
+  // Check admin access
+  if (localStorage.getItem('isAdmin') !== 'true') {
+    document.querySelector('#admin-login-container').style.display = 'block';
+  } else {
+    document.querySelector('#admin-login-container').style.display = 'none';
+  }
 
-    function hideAdminFeatures() {
-      const isAdmin = localStorage.getItem('isAdmin');
-      document.getElementById('admin-section').style.display = (isAdmin === 'true') ? 'block' : 'none';
-    }
-
-    // --- Display products ---
-    function displayProducts() {
-      const productsDiv = document.getElementById('products');
-      productsDiv.innerHTML = '';
-      products.forEach((prod, index) => {
-        const prodDiv = document.createElement('div');
-        prodDiv.className = 'product';
-        prodDiv.innerHTML = `
-          <img src="${prod.image}" alt="${prod.name}" />
-          <h3>${prod.name}</h3>
-          <p>Price: $${prod.price}</p>
-          <button onclick="addToCart(${index})">Add to Cart</button>
-        `;
-        productsDiv.appendChild(prodDiv);
-      });
-    }
-
-    // --- Cart functions ---
-    function addToCart(index) {
-      cart.push(products[index]);
-      displayCart();
-    }
-
-    function displayCart() {
-      const cartDiv = document.getElementById('cart');
-      cartDiv.innerHTML = '';
-      if (cart.length === 0) {
-        cartDiv.innerHTML = '<p>Cart is empty</p>';
-        return;
-      }
-      let total = 0;
-      cart.forEach((item, i) => {
-        total += item.price;
-        const itemDiv = document.createElement('div');
-        itemDiv.innerHTML = `
-          ${item.name} - $${item.price}
-          <button onclick="removeFromCart(${i})">Remove</button>
-        `;
-        cartDiv.appendChild(itemDiv);
-      });
-      const totalDiv = document.createElement('div');
-      totalDiv.innerHTML = `<strong>Total: $${total}</strong>`;
-      cartDiv.appendChild(totalDiv);
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      displayCart();
-    }
-
-    // --- Place Order ---
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
-      }
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      if (!name || !phone) {
-        alert('Please fill in all details.');
-        return;
-      }
-      // Save order
-      orders.push({ name, phone, items: [...cart] });
-      localStorage.setItem('orders', JSON.stringify(orders));
-      alert('Order placed! Thank you.');
-      // Clear cart and form
-      cart = [];
-      displayCart();
-      document.getElementById('orderForm').reset();
+  // Display products
+  function displayProducts() {
+    productsDiv.innerHTML = '';
+    products.forEach((product, index) => {
+      const prodDiv = document.createElement('div');
+      prodDiv.className = 'product';
+      prodDiv.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>Price: $${product.price}</p>
+        <button onclick="addToCart(${index})">Add to Cart</button>
+      `;
+      productsDiv.appendChild(prodDiv);
     });
+  }
 
-    // --- Add product with image upload ---
-    document.getElementById('productForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('productName').value;
-      const price = parseFloat(document.getElementById('productPrice').value);
-      const fileInput = document.getElementById('productImageFile');
-      const file = fileInput.files[0];
+  // Add product to cart
+  function addToCart(index) {
+    cart.push(products[index]);
+    displayCart();
+  }
 
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const imageDataUrl = e.target.result;
-          products.push({ name, price, image: imageDataUrl });
-          localStorage.setItem('products', JSON.stringify(products));
-          alert('Product added!');
-          document.getElementById('productForm').reset();
-          displayProducts();
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert('Please select an image file.');
-      }
+  // Display cart
+  function displayCart() {
+    cartDiv.innerHTML = '';
+    if (cart.length === 0) {
+      cartDiv.innerHTML = '<p>Cart is empty</p>';
+      return;
+    }
+    let total = 0;
+    cart.forEach((item, i) => {
+      total += item.price;
+      const itemDiv = document.createElement('div');
+      itemDiv.innerHTML = `
+        ${item.name} - $${item.price}
+        <button onclick="removeFromCart(${i})">Remove</button>
+      `;
+      cartDiv.appendChild(itemDiv);
     });
+    const totalDiv = document.createElement('div');
+    totalDiv.innerHTML = `<strong>Total: $${total}</strong>`;
+    cartDiv.appendChild(totalDiv);
+  }
 
-    // --- On load ---
-    window.onload = () => {
-      hideAdminFeatures();
-      displayProducts();
-    };
-  </script>
+  // Remove item from cart
+  function removeFromCart(i) {
+    cart.splice(i, 1);
+    displayCart();
+  }
+
+  // Handle order form submission
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    if (!name || !phone) {
+      alert('Please fill in all fields.');
+      return;
+    }
+    orders.push({ name, phone, items: [...cart] });
+    localStorage.setItem('orders', JSON.stringify(orders));
+    alert('Order placed! Thank you.');
+    cart = [];
+    displayCart();
+    document.getElementById('orderForm').reset();
+  });
+
+  // Initialize cart
+  let cart = [];
+
+  // Load data on page load
+  window.onload = () => {
+    displayProducts();
+    displayCart();
+  };
+</script>
 </body>
 </html>
