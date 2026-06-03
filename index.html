@@ -7,15 +7,16 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #ffdAB9; /* Peach color */
+      background-color: #ffe6f0; /* Cute pink background */
       padding: 20px;
       margin: 0;
       color: #333;
+      text-align: center; /* Center all content by default */
     }
 
     h1 {
-      color: #333;
-      text-align: center;
+      color: #444;
+      margin-bottom: 20px;
     }
 
     /* Admin login button container */
@@ -27,85 +28,96 @@
     }
 
     /* Style for product display */
-  #products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    #products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
 
-  .product {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 10px;
-    width: 200px;
-    margin: 10px;
-    text-align: center;
-    transition: transform 0.2s;
-  }
+    .product {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      width: 200px;
+      margin: 10px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
 
-  .product:hover {
-    transform: scale(1.05);
-  }
+    .product:hover {
+      transform: scale(1.05);
+    }
 
-  .product img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-  }
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
 
-  /* Stylish, cute buttons */
-  button {
-    background: linear-gradient(135deg, #ff7f50, #ff6347); /* Peach to Tomato gradient */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 10px;
-    border-radius: 25px; /* Rounded "pill" shape */
-    cursor: pointer;
-    font-weight: bold;
-    font-family: 'Arial', sans-serif;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
+    /* Cute, pink buttons style */
+    button {
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4); /* Pink gradient */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 25px; /* Rounded "pill" shape */
+      cursor: pointer;
+      font-weight: bold;
+      font-family: 'Arial', sans-serif;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
 
-  button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-    background: linear-gradient(135deg, #ff6347, #ff4500);
-  }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #ff69b4, #ff1493);
+    }
 
-  /* Cart styles */
-  #cart {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 20px auto;
-  }
+    /* Center the buttons and forms */
+    #admin-section, #cart, #orderForm {
+      max-width: 400px;
+      margin: 20px auto;
+    }
 
-  #cart div {
-    margin-bottom: 8px;
-  }
+    /* Admin login form style (hidden toggle) */
+    #loginForm {
+      display: none;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin-top: 10px;
+    }
 
-  /* Admin section (hidden by default) */
-  #admin-section {
-    display: none;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-width: 400px;
-    margin: 20px auto;
-  }
+    /* Input styles */
+    input[type="text"], input[type="number"], input[type="tel"], input[type="password"], input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* Order form button */
+    #orderForm button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 25px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
   <!-- Admin login button at top right -->
   <div id="admin-login-container">
     <button onclick="toggleLogin()">Admin Login</button>
-    <div id="loginForm" style="display:none; margin-top: 10px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+    <div id="loginForm">
       <input type="text" id="adminUser" placeholder="Username" />
       <input type="password" id="adminPass" placeholder="Password" />
       <button onclick="checkLogin()">Login</button>
@@ -125,8 +137,8 @@
   <!-- Order form -->
   <h2>Order Form</h2>
   <form id="orderForm">
-    <input type="text" id="name" placeholder="Your Name" required /><br/><br/>
-    <input type="tel" id="phone" placeholder="Your Phone Number" required /><br/><br/>
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="tel" id="phone" placeholder="Your Phone Number" required />
     <button type="submit">Place Order</button>
   </form>
 
@@ -134,29 +146,32 @@
   <div id="admin-section">
     <h2>Admin Panel - Add Products</h2>
     <form id="productForm">
-      <input type="text" id="productName" placeholder="Product Name" required /><br/><br/>
-      <input type="number" id="productPrice" placeholder="Price" required /><br/><br/>
-      <input type="text" id="productImage" placeholder="Image URL" required /><br/><br/>
+      <input type="text" id="productName" placeholder="Product Name" required />
+      <input type="number" id="productPrice" placeholder="Price" required />
+      <input type="file" id="productImageFile" accept="image/*" required />
       <button type="submit">Add Product</button>
     </form>
   </div>
 
   <script>
-    // Hardcoded admin credentials
-    const adminUsername = "admin";
-    const adminPassword = "password";
+    // Admin credentials
+    const adminUsername = "admin"; // Change as needed
+    const adminPassword = "password"; // Change as needed
 
-    // Toggle login form visibility
+    let products = JSON.parse(localStorage.getItem('products')) || [
+      { name: "Red Shirt", price: 20, image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Red+Shirt" },
+      { name: "Blue Jeans", price: 40, image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Blue+Jeans" }
+    ];
+
+    let cart = [];
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    // --- Admin login functions ---
     function toggleLogin() {
       const loginDiv = document.getElementById('loginForm');
-      if (loginDiv.style.display === 'none') {
-        loginDiv.style.display = 'block';
-      } else {
-        loginDiv.style.display = 'none';
-      }
+      loginDiv.style.display = (loginDiv.style.display === 'none' || loginDiv.style.display === '') ? 'block' : 'none';
     }
 
-    // Check login credentials
     function checkLogin() {
       const username = document.getElementById('adminUser').value;
       const password = document.getElementById('adminPass').value;
@@ -164,44 +179,24 @@
         localStorage.setItem('isAdmin', 'true');
         alert('Admin logged in!');
         hideAdminFeatures();
-        toggleLogin(); // hide login form
+        toggleLogin();
       } else {
         alert('Incorrect username or password.');
       }
     }
 
-    // Logout
     function logout() {
       localStorage.removeItem('isAdmin');
       alert('Logged out!');
       hideAdminFeatures();
     }
 
-    // Show/hide admin features based on login
     function hideAdminFeatures() {
       const isAdmin = localStorage.getItem('isAdmin');
-      const adminSection = document.getElementById('admin-section');
-      if (isAdmin === 'true') {
-        adminSection.style.display = 'block';
-      } else {
-        adminSection.style.display = 'none';
-      }
+      document.getElementById('admin-section').style.display = (isAdmin === 'true') ? 'block' : 'none';
     }
 
-    // Initialize
-    window.onload = () => {
-      hideAdminFeatures();
-      displayProducts();
-    };
-
-    // Sample products - load from localStorage or default
-    let products = JSON.parse(localStorage.getItem('products')) || [
-      { name: "Red Shirt", price: 20, image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Red+Shirt" },
-      { name: "Blue Jeans", price: 40, image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Blue+Jeans" }
-    ];
-
-    let cart = [];
-
+    // --- Display products ---
     function displayProducts() {
       const productsDiv = document.getElementById('products');
       productsDiv.innerHTML = '';
@@ -218,6 +213,7 @@
       });
     }
 
+    // --- Cart functions ---
     function addToCart(index) {
       cart.push(products[index]);
       displayCart();
@@ -234,7 +230,6 @@
       cart.forEach((item, i) => {
         total += item.price;
         const itemDiv = document.createElement('div');
-        itemDiv.id = 'cart-item';
         itemDiv.innerHTML = `
           ${item.name} - $${item.price}
           <button onclick="removeFromCart(${i})">Remove</button>
@@ -251,7 +246,7 @@
       displayCart();
     }
 
-    // Handle order submission
+    // --- Place Order ---
     document.getElementById('orderForm').addEventListener('submit', function(e) {
       e.preventDefault();
       if (cart.length === 0) {
@@ -260,9 +255,12 @@
       }
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
-      // Save order data
-      const orders = JSON.parse(localStorage.getItem('orders')) || [];
-      orders.push({ name, phone, items: cart });
+      if (!name || !phone) {
+        alert('Please fill in all details.');
+        return;
+      }
+      // Save order
+      orders.push({ name, phone, items: [...cart] });
       localStorage.setItem('orders', JSON.stringify(orders));
       alert('Order placed! Thank you.');
       // Clear cart and form
@@ -271,18 +269,35 @@
       document.getElementById('orderForm').reset();
     });
 
-    // Handle admin form to add products
+    // --- Add product with image upload ---
     document.getElementById('productForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('productName').value;
       const price = parseFloat(document.getElementById('productPrice').value);
-      const image = document.getElementById('productImage').value;
-      products.push({ name, price, image });
-      localStorage.setItem('products', JSON.stringify(products));
-      alert('Product added!');
-      this.reset();
-      displayProducts();
+      const fileInput = document.getElementById('productImageFile');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageDataUrl = e.target.result;
+          products.push({ name, price, image: imageDataUrl });
+          localStorage.setItem('products', JSON.stringify(products));
+          alert('Product added!');
+          document.getElementById('productForm').reset();
+          displayProducts();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Please select an image file.');
+      }
     });
+
+    // --- On load ---
+    window.onload = () => {
+      hideAdminFeatures();
+      displayProducts();
+    };
   </script>
 </body>
 </html>
