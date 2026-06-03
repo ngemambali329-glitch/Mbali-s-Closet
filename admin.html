@@ -3,47 +3,232 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin Dashboard</title>
+<title>Admin Dashboard - Mbali's Closet</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-  h1 { text-align: center; }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-  th { background-color: #eee; }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ffe6f0;
+    padding: 20px;
+    margin: 0;
+    color: #333;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* For sections side by side or stacked */
+  .section {
+    margin-bottom: 40px;
+  }
+
+  /* Product list styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #f4a6b7;
+  }
+
+  /* Buttons */
+  button {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 2px;
+  }
+
+  button:hover {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+  }
+
+  /* Input styles */
+  input[type="text"], input[type="number"], input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
 </style>
 </head>
 <body>
-<h1>Customer Orders</h1>
-<div id="ordersContainer"></div>
+
+<h1>Admin Dashboard</h1>
+
+<!-- Section to add new products -->
+<div class="section">
+  <h2>Add New Product</h2>
+  <form id="addProductForm">
+    <input type="text" id="newProductName" placeholder="Product Name" required />
+    <input type="number" id="newProductPrice" placeholder="Price" required />
+    <input type="file" id="newProductImage" accept="image/*" required />
+    <button type="submit">Add Product</button>
+  </form>
+</div>
+
+<!-- Section to display products -->
+<div class="section">
+  <h2>Manage Products</h2>
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<!-- Section to view customers and their orders -->
+<div class="section">
+  <h2>Customer Orders</h2>
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Items</th>
+        <th>Delete Order</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
 <script>
-  // Verify admin login
-  const isAdmin = localStorage.getItem('isAdmin');
-  if (isAdmin !== 'true') {
+  // Check if admin is logged in
+  if (localStorage.getItem('isAdmin') !== 'true') {
     alert('Access denied. Please log in as admin.');
     window.location.href = 'index.html'; // redirect to main page
   }
 
-  // Load orders from localStorage
-  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  // Load products and orders from localStorage
+  let products = JSON.parse(localStorage.getItem('products')) || [];
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
-  const container = document.getElementById('ordersContainer');
+  const productTableBody = document.querySelector('#productTable tbody');
+  const ordersTableBody = document.querySelector('#ordersTable tbody');
 
-  if (orders.length === 0) {
-    container.innerHTML = '<p>No orders yet.</p>';
-  } else {
-    let html = '<table><tr><th>Name</th><th>Phone</th><th>Items</th></tr>';
-    orders.forEach(order => {
-      const itemsList = order.items.map(i => i.name + ' ($' + i.price + ')').join(', ');
-      html += `<tr>
-        <td>${order.name}</td>
-        <td>${order.phone}</td>
-        <td>${itemsList}</td>
-      </tr>`;
+  // Function to refresh product table
+  function loadProducts() {
+    productTableBody.innerHTML = '';
+    products.forEach((prod, index) => {
+      const tr = document.createElement('tr');
+
+      // Image cell
+      const imgTd = document.createElement('td');
+      const img = document.createElement('img');
+      img.src = prod.image;
+      img.width = 80;
+      imgTd.appendChild(img);
+      tr.appendChild(imgTd);
+
+      // Name cell
+      const nameTd = document.createElement('td');
+      nameTd.innerText = prod.name;
+      tr.appendChild(nameTd);
+
+      // Price cell
+      const priceTd = document.createElement('td');
+      priceTd.innerText = `$${prod.price}`;
+      tr.appendChild(priceTd);
+
+      // Delete button cell
+      const delTd = document.createElement('td');
+      const delBtn = document.createElement('button');
+      delBtn.innerText = 'Delete';
+      delBtn.onclick = () => {
+        products.splice(index, 1);
+        localStorage.setItem('products', JSON.stringify(products));
+        loadProducts();
+      };
+      delTd.appendChild(delBtn);
+      tr.appendChild(delTd);
+
+      productTableBody.appendChild(tr);
     });
-    html += '</table>';
-    container.innerHTML = html;
   }
+
+  // Load customer orders
+  function loadOrders() {
+    ordersTableBody.innerHTML = '';
+    orders.forEach((order, index) => {
+      const tr = document.createElement('tr');
+
+      // Customer name
+      const nameTd = document.createElement('td');
+      nameTd.innerText = order.name;
+      tr.appendChild(nameTd);
+
+      // Phone
+      const phoneTd = document.createElement('td');
+      phoneTd.innerText = order.phone;
+      tr.appendChild(phoneTd);
+
+      // Items
+      const itemsTd = document.createElement('td');
+      itemsTd.innerText = order.items.map(i => i.name).join(', ');
+      tr.appendChild(itemsTd);
+
+      // Delete order
+      const delTd = document.createElement('td');
+      const delBtn = document.createElement('button');
+      delBtn.innerText = 'Delete';
+      delBtn.onclick = () => {
+        orders.splice(index, 1);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        loadOrders();
+      };
+      delTd.appendChild(delBtn);
+      tr.appendChild(delTd);
+
+      ordersTableBody.appendChild(tr);
+    });
+  }
+
+  // Load initial data
+  loadProducts();
+  loadOrders();
+
+  // Add new product
+  document.getElementById('addProductForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('newProductName').value;
+    const price = parseFloat(document.getElementById('newProductPrice').value);
+    const fileInput = document.getElementById('newProductImage');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageDataUrl = e.target.result;
+        products.push({ name, price, image: imageDataUrl });
+        localStorage.setItem('products', JSON.stringify(products));
+        loadProducts();
+        document.getElementById('addProductForm').reset();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert('Please select an image.');
+    }
+  });
 </script>
 </body>
 </html>
