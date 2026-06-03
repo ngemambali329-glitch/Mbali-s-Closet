@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Add Products</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Admin Panel - Add Products</h1>
+  <form id="productForm">
+    <input type="text" id="name" placeholder="Product Name" required />
+    <input type="number" id="price" placeholder="Price" required />
+    <input type="text" id="image" placeholder="Image URL" required />
+    <button type="submit">Add Product</button>
+  </form>
+
+  <script>
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const price = parseFloat(document.getElementById('price').value);
+      const image = document.getElementById('image').value;
+      
+      let products = JSON.parse(localStorage.getItem('products')) || [];
+      products.push({ name, price, image });
+      localStorage.setItem('products', JSON.stringify(products));
+      
+      alert('Product added!');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
